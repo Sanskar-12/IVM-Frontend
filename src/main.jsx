@@ -18,12 +18,12 @@ const options = {
 
 root.render(
   <React.StrictMode>
-    <ChakraProvider>
-      <Provider store={store}>
+    <Provider store={store}>
+      <ChakraProvider>
         <AlertProvider template={AlertTemplate} {...options}>
           <App />
         </AlertProvider>
-      </Provider>
-    </ChakraProvider>
+      </ChakraProvider>
+    </Provider>
   </React.StrictMode>
 );
