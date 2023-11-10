@@ -1,4 +1,5 @@
 import axios from "axios";
+import { server } from "../store";
 // import { server } from "../store";
 
 export const getAllOrdersAction = () => async (dispatch) => {
@@ -11,7 +12,9 @@ export const getAllOrdersAction = () => async (dispatch) => {
     //   withCredentials: true,
     // };
 
-    const { data } = await axios.get(`/api/v1/order/get-order`);
+    const { data } = await axios.get(`${server}/order/get-order`, {
+      withCredentials: true,
+    });
 
     dispatch({
       type: "getAllOrdersSuccess",
@@ -25,7 +28,7 @@ export const getAllOrdersAction = () => async (dispatch) => {
   }
 };
 
-export const approveOrdersAction = (orderId,remark) => async (dispatch) => {
+export const approveOrdersAction = (orderId, remark) => async (dispatch) => {
   try {
     dispatch({
       type: "approveOrdersRequest",
@@ -35,11 +38,22 @@ export const approveOrdersAction = (orderId,remark) => async (dispatch) => {
     //   withCredentials: true,
     // };
 
-    const {data}=await axios.post(`/api/v1/order/accept/${orderId}`,{remark:remark});
+    const { data } = await axios.post(
+      `${server}/order/accept/${orderId}`,
+      {
+        remark: remark,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        withCredentials: true,
+      }
+    );
 
     dispatch({
       type: "approveOrdersSuccess",
-      payload:data.remark
+      payload: data.remark,
     });
   } catch (error) {
     dispatch({
@@ -49,9 +63,7 @@ export const approveOrdersAction = (orderId,remark) => async (dispatch) => {
   }
 };
 
-
-
-export const declineOrdersAction = (orderId,remark) => async (dispatch) => {
+export const declineOrdersAction = (orderId, remark) => async (dispatch) => {
   try {
     dispatch({
       type: "declineOrdersRequest",
@@ -61,11 +73,22 @@ export const declineOrdersAction = (orderId,remark) => async (dispatch) => {
     //   withCredentials: true,
     // };
 
-    const {data}=await axios.post(`/api/v1/order/reject/${orderId}`,{remark:remark});
+    const { data } = await axios.post(
+      `${server}/order/reject/${orderId}`,
+      {
+        remark: remark,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        withCredentials: true,
+      }
+    );
 
     dispatch({
       type: "declineOrdersSuccess",
-      payload:data.remark
+      payload: data.remark,
     });
   } catch (error) {
     dispatch({
@@ -75,31 +98,35 @@ export const declineOrdersAction = (orderId,remark) => async (dispatch) => {
   }
 };
 
+export const getAllOrdersForIntiatorSuperAdminandAdminAction =
+  () => async (dispatch) => {
+    try {
+      dispatch({
+        type: "getAllOrdersForIntiatorSuperAdminandAdminRequest",
+      });
 
+      // const options = {
+      //   withCredentials: true,
+      // };
 
-export const getAllOrdersForIntiatorSuperAdminandAdminAction = () => async (dispatch) => {
-  try {
-    dispatch({
-      type: "getAllOrdersForIntiatorSuperAdminandAdminRequest",
-    });
+      const { data } = await axios.get(
+        `${server}/order/get-order-intiator-superadmin-admin`,
+        {
+          withCredentials: true,
+        }
+      );
 
-    // const options = {
-    //   withCredentials: true,
-    // };
-
-    const { data } = await axios.get(`/api/v1/order/get-order-intiator-superadmin-admin`);
-
-    dispatch({
-      type: "getAllOrdersForIntiatorSuperAdminandAdminSuccess",
-      payload: data,
-    });
-  } catch (error) {
-    dispatch({
-      type: "getAllOrdersForIntiatorSuperAdminandAdminFail",
-      payload: error.response.data.message,
-    });
-  }
-};
+      dispatch({
+        type: "getAllOrdersForIntiatorSuperAdminandAdminSuccess",
+        payload: data,
+      });
+    } catch (error) {
+      dispatch({
+        type: "getAllOrdersForIntiatorSuperAdminandAdminFail",
+        payload: error.response.data.message,
+      });
+    }
+  };
 
 export const getAllOrdersForApprover = () => async (dispatch) => {
   try {
@@ -111,7 +138,9 @@ export const getAllOrdersForApprover = () => async (dispatch) => {
     //   withCredentials: true,
     // };
 
-    const { data } = await axios.get(`/api/v1/order/remarkedorders`);
+    const { data } = await axios.get(`${server}/order/remarkedorders`, {
+      withCredentials: true,
+    });
 
     dispatch({
       type: "getOrdersforApproverSuccess",
@@ -125,57 +154,73 @@ export const getAllOrdersForApprover = () => async (dispatch) => {
   }
 };
 
+export const approveOrdersforApproverAction =
+  (orderId, approverremark) => async (dispatch) => {
+    try {
+      dispatch({
+        type: "approveOrdersforApproverRequest",
+      });
 
-export const approveOrdersforApproverAction = (orderId,approverremark) => async (dispatch) => {
-  try {
-    dispatch({
-      type: "approveOrdersforApproverRequest",
-    });
+      // const options = {
+      //   withCredentials: true,
+      // };
 
-    // const options = {
-    //   withCredentials: true,
-    // };
+      const { data } = await axios.post(
+        `${server}/order/acceptforapprover/${orderId}`,
+        { approverremark: approverremark },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          withCredentials: true,
+        }
+      );
 
-    const {data}=await axios.post(`/api/v1/order/acceptforapprover/${orderId}`,{approverremark:approverremark});
+      dispatch({
+        type: "approveOrdersforApproverSuccess",
+        payload: data.approverremark,
+      });
+    } catch (error) {
+      dispatch({
+        type: "approveOrdersforApproverFail",
+        payload: error.response.data.message,
+      });
+    }
+  };
 
-    dispatch({
-      type: "approveOrdersforApproverSuccess",
-      payload:data.approverremark
-    });
-  } catch (error) {
-    dispatch({
-      type: "approveOrdersforApproverFail",
-      payload: error.response.data.message,
-    });
-  }
-};
+export const declineOrdersforApproverAction =
+  (orderId, approverremark) => async (dispatch) => {
+    try {
+      dispatch({
+        type: "declineOrdersforApproverRequest",
+      });
 
+      // const options = {
+      //   withCredentials: true,
+      // };
 
+      const { data } = await axios.post(
+        `${server}/order/rejectforapprover/${orderId}`,
+        { approverremark: approverremark },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          withCredentials: true,
+        }
+      );
 
-export const declineOrdersforApproverAction = (orderId,approverremark) => async (dispatch) => {
-  try {
-    dispatch({
-      type: "declineOrdersforApproverRequest",
-    });
-
-    // const options = {
-    //   withCredentials: true,
-    // };
-
-    const {data}=await axios.post(`/api/v1/order/rejectforapprover/${orderId}`,{approverremark:approverremark});
-
-    dispatch({
-      type: "declineOrdersforApproverSuccess",
-      payload:data.approverremark
-    });
-  } catch (error) {
-    dispatch({
-      type: "declineOrdersforApproverFail",
-      payload: error.response.data.message,
-    });
-  }
-};
-
+      dispatch({
+        type: "declineOrdersforApproverSuccess",
+        payload: data.approverremark,
+      });
+    } catch (error) {
+      dispatch({
+        type: "declineOrdersforApproverFail",
+        payload: error.response.data.message,
+      });
+    }
+  };
 
 export const getApprovedOrderforVerifierAction = () => async (dispatch) => {
   try {
@@ -187,11 +232,13 @@ export const getApprovedOrderforVerifierAction = () => async (dispatch) => {
     //   withCredentials: true,
     // };
 
-    const {data}=await axios.get(`/api/v1/order/getapproved`);
+    const { data } = await axios.get(`${server}/order/getapproved`, {
+      withCredentials: true,
+    });
 
     dispatch({
       type: "getApprovedofVerifierSuccess",
-      payload:data.approvedOrder
+      payload: data.approvedOrder,
     });
   } catch (error) {
     dispatch({
@@ -199,8 +246,7 @@ export const getApprovedOrderforVerifierAction = () => async (dispatch) => {
       payload: error.response.data.message,
     });
   }
-}
-
+};
 
 export const getRejectedOrderforVerifierAction = () => async (dispatch) => {
   try {
@@ -212,11 +258,13 @@ export const getRejectedOrderforVerifierAction = () => async (dispatch) => {
     //   withCredentials: true,
     // };
 
-    const {data}=await axios.get(`/api/v1/order/getrejected`);
+    const { data } = await axios.get(`${server}/order/getrejected`, {
+      withCredentials: true,
+    });
 
     dispatch({
       type: "getRejectedofVerifierSuccess",
-      payload:data.rejectedOrder
+      payload: data.rejectedOrder,
     });
   } catch (error) {
     dispatch({
@@ -224,5 +272,4 @@ export const getRejectedOrderforVerifierAction = () => async (dispatch) => {
       payload: error.response.data.message,
     });
   }
-}
-
+};

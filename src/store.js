@@ -4,7 +4,7 @@ import { getAllInventory } from "./Reducers/inventoryReducers";
 import { getAllOrders } from "./Reducers/orderReducers";
 import { createOrder } from "./Reducers/requisitionReducers";
 
-// export const server="http://localhost:8080/api/v1"
+export const server="https://ivm-backend.onrender.com/api/v1"
 
 const store = configureStore({
   reducer: {

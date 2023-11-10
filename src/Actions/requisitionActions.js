@@ -1,4 +1,5 @@
 import axios from "axios";
+import { server } from "../store";
 
 export const createOrderAction=(formData)=>async(dispatch)=>{
     try {
@@ -6,15 +7,9 @@ export const createOrderAction=(formData)=>async(dispatch)=>{
           type: "createOrdersRequest",
         });
     
-        const config = {
-          headers: {
-            "Content-Type": "application/json",
-          },
-          // withCredentials: true,
-        };
-    
+        
         const { data } = await axios.post(
-          `/api/v1/order/add-order`,
+          `${server}/order/add-order`,
           {requisition_name:formData.requisition_name,
             department:formData.department,
             lab:formData.lab,
@@ -23,7 +18,11 @@ export const createOrderAction=(formData)=>async(dispatch)=>{
             items:formData.items
         
         },
-          config
+        { headers: {
+          "Content-Type": "application/json",
+        },
+          withCredentials: true,
+        }
         );
     
         dispatch({

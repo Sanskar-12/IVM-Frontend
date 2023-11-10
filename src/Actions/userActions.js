@@ -1,5 +1,5 @@
 import axios from "axios";
-// import {server} from "../store"
+import { server } from "../store";
 
 export const loginAction = (username, password) => async (dispatch) => {
   try {
@@ -7,17 +7,15 @@ export const loginAction = (username, password) => async (dispatch) => {
       type: "loginRequest",
     });
 
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-      },
-      // withCredentials: true,
-    };
-
     const { data } = await axios.post(
-      `/api/v1/login`,
+      `${server}/login`,
       { username, password },
-      config
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        withCredentials: true,
+      }
     );
 
     dispatch({
@@ -38,12 +36,12 @@ export const getUserDetailAction = () => async (dispatch) => {
       type: "loadUserRequest",
     });
 
-    const { data } = await axios.get(`/api/v1/me`);
+    const { data } = await axios.get(`${server}/me`);
 
     dispatch({
       type: "loadUserSuccess",
-      payload: data.user
-    })
+      payload: data.user,
+    });
   } catch (error) {
     dispatch({
       type: "loadUserFail",
@@ -58,12 +56,13 @@ export const logoutAction = () => async (dispatch) => {
       type: "logoutRequest",
     });
 
-
     // const config={
     //   withCredentials: true,
     // }
 
-    await axios.get(`/api/v1/logout`);
+    await axios.get(`${server}/logout`, {
+      withCredentials: true,
+    });
 
     dispatch({
       type: "logoutSuccess",
