@@ -121,7 +121,9 @@ const RequisitionForm = () => {
 
   useEffect(() => {
     axios
-      .get(`${server}/department/get-department`)
+      .get(`${server}/department/get-department`, {
+        withCredentials: true,
+      })
       .then((response) => {
         // console.log(response.data.department);
         setDepartments(response.data.department);
@@ -151,7 +153,9 @@ const RequisitionForm = () => {
     console.log(selectedDept);
     if (selectedDept) {
       axios
-        .get(`${server}/department/get-department-by-name/${selectedDept}`)
+        .get(`${server}/department/get-department-by-name/${selectedDept}`, {
+          withCredentials: true,
+        })
         .then((response) => {
           setLabs(response.data.department[0].labs);
           // console.log(response.data);
