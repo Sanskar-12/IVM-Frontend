@@ -86,24 +86,24 @@ function Grid({ refNo, to, subject, letter, payment, warranty, delievery }) {
     padding: "8px",
     textAlign: "center",
   };
-  const handleSubmit = async() => {
+  const handleSubmit = () => {
     // Step 1: Generate the PDF and fetch it
     let newData={refNo, to, subject, letter, payment, warranty, delievery}
     newData={...newData,data}
 console.log(newData);
-    await axios.post(`${server}/create-pdf`, newData,{
+     axios.post(`${server}/create-pdf`, newData,{
         headers:{
           "Content-Type":"application/pdf"
         },
         withCredentials: true,
       })
-      .then(async(want) => {
+      .then((want) => {
         // Assuming that the server returns the `pdfId` in the response
         // Step 2: Fetch the PDF by ID
         console.log(want);
         const pid = want.data.pdf._id;
         setbiData(want.data.pdf.pdfData.data);
-        return await axios.get(`${server}/fetch-pdf/${pid}`, { responseType: "blob" },{
+        return  axios.get(`${server}/fetch-pdf/${pid}`, { responseType: "blob" },{
           withCredentials: true,
         });
       })
