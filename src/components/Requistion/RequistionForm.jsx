@@ -5,13 +5,12 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 // import { useSelector } from "react-redux/es/hooks/useSelector";
 import DeleteIcon from "@mui/icons-material/Delete";
-import {useDispatch} from "react-redux"
+import { useDispatch } from "react-redux";
 import { createOrderAction } from "../../Actions/requisitionActions";
 import { server } from "../../store";
 
 const RequisitionForm = () => {
-
-  const dispatch=useDispatch()
+  const dispatch = useDispatch();
 
   const [departments, setDepartments] = useState([]);
   const [labs, setLabs] = useState([]);
@@ -71,12 +70,12 @@ const RequisitionForm = () => {
     const updatedTotalOrders = [...totalOrders];
 
     updatedTotalOrders.splice(index, 1);
-    
+
     setTotalOrders(updatedTotalOrders);
   };
-  
+
   //console.log(totalOrders);
-  
+
   const handleRemarks = (e) => {
     setRemarks(e);
   };
@@ -102,19 +101,15 @@ const RequisitionForm = () => {
 
     console.log(formData);
 
-    dispatch(createOrderAction(formData))
-    
+    dispatch(createOrderAction(formData));
 
     reset();
     setTotalOrders([]);
-
   };
-
 
   const [vendors, setVendors] = useState([]);
   const [selectedVendor, setSelectedVendor] = useState("");
   const [selectedVendorId, setSelectedVendorId] = useState(null);
-
 
   const {
     register,
@@ -139,7 +134,9 @@ const RequisitionForm = () => {
 
   useEffect(() => {
     axios
-      .get(`${server}/vendor/get-vendor`)
+      .get(`${server}/vendor/get-vendor`, {
+        withCredentials: true,
+      })
       .then((response) => {
         // console.log(response.data.vendor);
         setVendors(response.data.vendor);
@@ -169,7 +166,9 @@ const RequisitionForm = () => {
     console.log(selectedVendorId);
     if (selectedVendorId) {
       axios
-        .get(`${server}/vendor/get-vendor-byId/${selectedVendorId}`)
+        .get(`${server}/vendor/get-vendor-byId/${selectedVendorId}`, {
+          withCredentials: true,
+        })
         .then((response) => {
           setSelectedVendor(response.data.vendor);
           console.log(response.data.vendor);
@@ -201,7 +200,7 @@ const RequisitionForm = () => {
                   placeholder="Name"
                   value={username}
                 />
-                {errors.requistion_name&& (
+                {errors.requistion_name && (
                   <p className="text-red-500">
                     {errors.requistion_name.message}
                   </p>
@@ -269,7 +268,7 @@ const RequisitionForm = () => {
                   Expense Type:{" "}
                 </span>
                 <Controller
-                  id='category'
+                  id="category"
                   name="category"
                   control={control}
                   rules={{ required: "Please select Category Type" }}
@@ -277,16 +276,16 @@ const RequisitionForm = () => {
                     <select
                       className="border p-1 rounded-md focus:border-gray-400 px-1 w-full focus:outline-none focus:ring-0"
                       {...field}
-                      onChange={(e) =>{ 
+                      onChange={(e) => {
                         field.onChange(e);
-                        
-                        }
-                      }
+                      }}
                     >
                       <option value="">Select Expense</option>
                       <option value="Supplies">Supplies</option>
                       <option value="Repair">Repair</option>
-                      <option value="External Services">External Servies</option>
+                      <option value="External Services">
+                        External Servies
+                      </option>
                       <option value="Equipment">Equipments</option>
                     </select>
                   )}
@@ -494,14 +493,9 @@ const RequisitionForm = () => {
 
         <div className="pt-6  mt-6 h-[200px]">
           <div className="border-2  pl-2 flex flex-col h-full  rounded-md min-w-full ">
-            <label
-              
-              className="text-xl text-[#5C59E8] font-bold "
-            >
-              Remark
-            </label>
+            <label className="text-xl text-[#5C59E8] font-bold ">Remark</label>
             <input
-            onChange={(e) => handleRemarks(e.target.value)}
+              onChange={(e) => handleRemarks(e.target.value)}
               placeholder="Remarks"
               className=" bg-transparent  p-2  m-2"
             ></input>
