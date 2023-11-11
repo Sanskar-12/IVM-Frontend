@@ -94,7 +94,7 @@ console.log(newData);
     axios
       .post(`${server}/create-pdf`, newData,{
         headers:{
-          "Content-Type":"application/pdf"
+          "Content-Type":"application/json"
         },
         withCredentials: true,
       })
