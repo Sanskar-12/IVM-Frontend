@@ -7,6 +7,7 @@ import axios from "axios";
 import DeleteIcon from "@mui/icons-material/Delete";
 import {useDispatch} from "react-redux"
 import { createOrderAction } from "../../Actions/requisitionActions";
+import { server } from "../../store";
 
 const RequisitionForm = () => {
 
@@ -125,7 +126,7 @@ const RequisitionForm = () => {
 
   useEffect(() => {
     axios
-      .get("/api/v1/department/get-department")
+      .get(`${server}/department/get-department`)
       .then((response) => {
         // console.log(response.data.department);
         setDepartments(response.data.department);
@@ -138,7 +139,7 @@ const RequisitionForm = () => {
 
   useEffect(() => {
     axios
-      .get("/api/v1/vendor/get-vendor")
+      .get(`${server}/vendor/get-vendor`)
       .then((response) => {
         // console.log(response.data.vendor);
         setVendors(response.data.vendor);
@@ -153,7 +154,7 @@ const RequisitionForm = () => {
     console.log(selectedDept);
     if (selectedDept) {
       axios
-        .get(`/api/v1/department/get-department-by-name/${selectedDept}`)
+        .get(`${server}/department/get-department-by-name/${selectedDept}`)
         .then((response) => {
           setLabs(response.data.department[0].labs);
           // console.log(response.data);
@@ -168,7 +169,7 @@ const RequisitionForm = () => {
     console.log(selectedVendorId);
     if (selectedVendorId) {
       axios
-        .get(`/api/v1/vendor/get-vendor-byId/${selectedVendorId}`)
+        .get(`${server}/vendor/get-vendor-byId/${selectedVendorId}`)
         .then((response) => {
           setSelectedVendor(response.data.vendor);
           console.log(response.data.vendor);

@@ -2,6 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 import { saveAs } from "file-saver";
 import { Document, Page, pdfjs } from "react-pdf";
+import { server } from "../../store";
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
   "pdfjs-dist/build/pdf.worker.min.js",
   import.meta.url
@@ -91,14 +92,14 @@ function Grid({ refNo, to, subject, letter, payment, warranty, delievery }) {
     newData={...newData,data}
 console.log(newData);
     axios
-      .post("/api/v1/create-pdf", newData)
+      .post(`${server}/create-pdf`, newData)
       .then((want) => {
         // Assuming that the server returns the `pdfId` in the response
         // Step 2: Fetch the PDF by ID
         console.log(want);
         const pid = want.data.pdf._id;
         setbiData(want.data.pdf.pdfData.data);
-        return axios.get(`/api/v1/fetch-pdf/${pid}`, { responseType: "blob" });
+        return axios.get(`${server}/fetch-pdf/${pid}`, { responseType: "blob" });
       })
       .then((response) => {
         if (response.status === 200) {
