@@ -95,6 +95,7 @@ console.log(newData);
         headers:{
           "Content-Type":"application/json"
         },
+        withCredentials:true
       })
       .then((want) => {
         // Assuming that the server returns the `pdfId` in the response
@@ -102,7 +103,7 @@ console.log(newData);
         console.log(want);
         const pid = want.data.pdf._id;
         setbiData(want.data.pdf.pdfData.data);
-        return  axios.get(`${server}/fetch-pdf/${pid}`, { responseType: "blob" });
+        return  axios.get(`${server}/fetch-pdf/${pid}`, { responseType: "blob" },{  withCredentials:true});
       })
       .then((response) => {
         if (response.status === 200) {
